@@ -40,7 +40,6 @@ set $AutoLocker       ~/.config/i3/scripts/i3-autolock.sh
 set $Locker           betterlockscreen -l --display 1 --off 120
 set $Display          ~/.config/i3/scripts/i3-display-setter.sh
 set $polybar          ~/.config/polybar/launch.sh
-set $ipcSplit         ~/.config/polybar/scripts/ipc-split.sh
 set $drunApplauncher  rofi -show drun -monitor eDP-1
 set $runApplauncher   rofi -show run -monitor eDP-1
 
@@ -51,8 +50,7 @@ set $alt Mod1
 exec_always --no-startup-id $Display
 exec_always --no-startup-id $Polybar
 exec_always --no-startup-id $AutoLocker
-exec_always --no-startup-id autotiling -w 1 2 3 4 5 6 7 8 9
-exec_always --no-startup-id $ipcSplit
+# exec_always --no-startup-id autotiling -w 1 2 3 4 5 6 7 8 9
 exec_always --no-startup-id picom --experimental-backends
 
 # Exec on startup
@@ -122,7 +120,7 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec $Terminal
 bindsym $mod+Shift+Return exec $Browser
-bindsym F12 exec "i3-scratchpad -d75%x50% -p0,38 -mt -atl -t 'kitty'"
+bindsym F12 exec "i3-scratchpad -d75%x50% -p0,29 -mt -atl -t 'kitty'"
 
 # Application Launcher/Run launcher
 bindsym $mod+Shift+d exec $runApplauncher
