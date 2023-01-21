@@ -34,14 +34,15 @@ client.urgent           $borderAlert      $borderAlert        $borderAlert      
 client.background       $bg-color
 
 # Variables           Command 
-set $Terminal         kitty --class="i3_term" -1 --instance-group="i3_term_group"
-set $Browser          brave
+set $fTerminal        ~/.config/i3/scripts/i3-float-terminal.sh 
 set $AutoLocker       ~/.config/i3/scripts/i3-autolock.sh
-set $Locker           betterlockscreen -l --display 1 --off 120
 set $Display          ~/.config/i3/scripts/i3-display-setter.sh
 set $polybar          ~/.config/polybar/launch.sh
+set $Terminal         kitty --class="i3_term" -1 --instance-group="i3_term_group"
+set $Locker           betterlockscreen -l --display 1 --off 120
 set $drunApplauncher  rofi -show drun -monitor eDP-1
 set $runApplauncher   rofi -show run -monitor eDP-1
+set $Browser          brave
 
 set $mod Mod4
 set $alt Mod1
@@ -50,14 +51,16 @@ set $alt Mod1
 exec_always --no-startup-id $Display
 exec_always --no-startup-id $Polybar
 exec_always --no-startup-id $AutoLocker
-# exec_always --no-startup-id autotiling -w 1 2 3 4 5 6 7 8 9
-exec_always --no-startup-id picom --experimental-backends
+exec_always --no-startup-id autotiling -l 2
+exec_always --no-startup-id picom --vsync --experimental-backends
 
 # Exec on startup
 exec --no-startup-id mousetrap -t 1
 
-# Disable Floating Windows
+# i3_term group properties
 for_window [class="i3_term"] floating disable
+for_window [class="i3_float_term"] floating enabled
+for_window [class="i3_float_term"] sticky enabled
 
 # Float Godot Game windows, but not the editor
 for_window [class="Godot" instance="Godot_Editor"] floating disabled
@@ -102,11 +105,18 @@ bindsym $mod+Shift+x exec --no-startup-id $Locker
 bindsym XF86AudioRaiseVolume exec --no-startup-id setvol + 
 bindsym XF86AudioLowerVolume exec --no-startup-id setvol - 
 bindsym XF86AudioMute exec --no-startup-id setvol mute 
+bindsym $alt+Up exec --no-startup-id setvol +
+bindsym $alt+Down exec --no-startup-id setvol -
+bindsym $alt+Shift+m exec --no-startup-id setvol mute
+
+# Toggle mic
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # Add buttons to incremently software brightness
 bindsym XF86MonBrightnessUp exec --no-startup-id setbri +
 bindsym XF86MonBrightnessDown exec --no-startup-id setbri -
+bindsym $alt+Shift+Up exec --no-startup-id setbri +
+bindsym $alt+Shift+Down exec --no-startup-id setbri -
 
 # Toggle Polybar
 bindsym XF86Tools exec --no-startup-id polybar-msg cmd toggle
@@ -120,7 +130,7 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec $Terminal
 bindsym $mod+Shift+Return exec $Browser
-bindsym F12 exec "i3-scratchpad -d75%x50% -p0,29 -mt -atl -t 'kitty'"
+bindsym F12 exec $fTerminal
 
 # Application Launcher/Run launcher
 bindsym $mod+Shift+d exec $runApplauncher
@@ -175,6 +185,8 @@ bindsym $mod+f fullscreen toggle
 # bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
+
+bindsym $mod+a focus parent
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
